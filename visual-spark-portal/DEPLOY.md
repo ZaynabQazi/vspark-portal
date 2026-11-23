@@ -32,15 +32,23 @@ There is **no default password in production**. If `ADMIN_USER`, `ADMIN_PASSWORD
 | `COMPETITION_MINUTES` | no | `20` |
 | `SMTP_HOST` `SMTP_PORT` `SMTP_USER` `SMTP_PASS` `MAIL_FROM` | no | email on accept/reject; skipped when absent |
 
-## Option A — Render
+## Option A — Render (repo is already published)
 
-1. Create a free MongoDB Atlas cluster, add a database user, allow `0.0.0.0/0`, copy the URI.
-2. Push this folder to GitHub (Render deploys from a repo), or use the Render CLI.
-3. Render Dashboard → **New** → **Blueprint** → pick the repo. `render.yaml` is detected.
-4. When prompted, fill `MONGODB_URI`, `ADMIN_USER`, `ADMIN_PASSWORD`. `TOKEN_SECRET` is generated automatically.
-5. Deploy, open `https://<service>.onrender.com/admin`, sign in.
+Repository: **https://github.com/ZaynabQazi/vspark-portal**
 
-Manual alternative: **New → Web Service**, build `npm ci`, start `npm start`, add the same env vars.
+One-click Blueprint: **https://dashboard.render.com/blueprint/new?repo=https://github.com/ZaynabQazi/vspark-portal**
+
+1. Create a free MongoDB Atlas cluster (M0), add a database user, allow `0.0.0.0/0`, copy the `mongodb+srv://` URI.
+2. Open the Blueprint link above (or Render Dashboard → **New** → **Blueprint** → pick `vspark-portal`).
+   `render.yaml` is found automatically; it sets `rootDir: visual-spark-portal` and `runtime: node`.
+3. When prompted, fill `MONGODB_URI`, `ADMIN_USER`, `ADMIN_PASSWORD`. `TOKEN_SECRET` is generated automatically.
+4. Deploy, open `https://<service>.onrender.com/admin`, sign in.
+
+Manual alternative: **New → Web Service** → repo `vspark-portal`, **Root Directory** `visual-spark-portal`,
+build `npm ci --omit=dev`, start `npm start`, health check `/`, then add the same env vars.
+
+Without `MONGODB_URI` the service still boots, but it writes to `data/` on the container's ephemeral
+disk — registrations vanish on every restart or redeploy. Always set it on Render.
 
 Notes: the free instance sleeps after ~15 minutes of inactivity and wakes on the next request (first load may take ~30–60 s).
 

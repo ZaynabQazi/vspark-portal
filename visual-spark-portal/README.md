@@ -4,6 +4,12 @@ Registration, participant, and judging portal for **VSPARK — Prompt Engineerin
 
 Stack: Node.js 20+ + Express, plain HTML/CSS/JS in `/public`. Storage is **MongoDB** when `MONGODB_URI` is set, otherwise a **local JSON + receipts folder** (for `npm start` on a laptop). Designed for **Vercel** (no in-memory state, no server timers, no disk writes in Mongo mode).
 
+Repo: **https://github.com/ZaynabQazi/vspark-portal** · Deploy to Render:
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/ZaynabQazi/vspark-portal)
+
+See [DEPLOY.md](DEPLOY.md) for Render/Railway/Vercel steps and the required environment variables.
+
 ## Run locally
 
 ```bash

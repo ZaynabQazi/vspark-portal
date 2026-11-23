@@ -3,7 +3,9 @@ services:
     name: vspark-portal
     runtime: node
     plan: free
-    buildCommand: npm ci
+    # The app lives in a subfolder of the repo, so point Render at it.
+    rootDir: visual-spark-portal
+    buildCommand: npm ci --omit=dev
     startCommand: npm start
     healthCheckPath: /
     envVars:
