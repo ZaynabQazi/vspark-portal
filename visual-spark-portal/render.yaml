@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: vspark-portal
+    runtime: node
+    plan: free
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        sync: false
+      - key: MONGODB_DB
+        value: vspark
+      - key: ADMIN_USER
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: TOKEN_SECRET
+        generateValue: true
+      - key: COMPETITION_MINUTES
+        value: "20"

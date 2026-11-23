@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex" />
+  <title>Organizer Dashboard | VSPARK</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232f7bff'/%3E%3Ctext x='16' y='23' font-size='20' font-weight='900' text-anchor='middle' fill='white' font-family='Arial'%3EV%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body class="admin">
+  <header class="a-top">
+    <div class="container">
+      <a class="brand" href="/">
+        <span class="brand-mark">V</span>
+        <span class="brand-text">SPARK<small>Organizer dashboard</small></span>
+      </a>
+      <div class="right">
+        <a class="btn ghost sm" href="/">View site</a>
+        <button class="btn ghost sm" id="logoutBtn" hidden>Log out</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="login-wrap" id="loginView">
+    <form class="card login-card" id="loginForm" novalidate>
+      <div class="lock">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg>
+      </div>
+      <h1>Organizer login</h1>
+      <p>Sign in to manage registrations, the competition gate, live monitoring and results.</p>
+      <div id="loginAlert" class="alert err" role="alert"></div>
+      <div class="field">
+        <label for="user">Username</label>
+        <input id="user" autocomplete="username" />
+      </div>
+      <div class="field">
+        <label for="pw">Password</label>
+        <input id="pw" type="password" autocomplete="current-password" />
+      </div>
+      <button class="btn" id="loginBtn" type="submit">Sign in</button>
+    </form>
+  </div>
+
+  <main class="dash" id="dashView" hidden>
+    <div class="container">
+      <div class="nav-tabs" id="mainTabs">
+        <button data-tab="regs" class="on">Registrations</button>
+        <button data-tab="comp">Competition</button>
+        <button data-tab="live">Live</button>
+        <button data-tab="results">Results</button>
+      </div>
+
+      <section class="panel on" id="panel-regs">
+        <div class="dash-head">
+          <div>
+            <h1>Registrations</h1>
+            <p>Accept or reject entries. Receipts are admin-only.</p>
+          </div>
+          <div style="display:flex;gap:10px">
+            <button class="btn ghost sm" id="refreshBtn">Refresh</button>
+            <button class="btn sm" id="csvBtn">Export CSV</button>
+          </div>
+        </div>
+        <div class="kpis">
+          <div class="kpi"><small>Total</small><strong id="kTotal">0</strong></div>
+          <div class="kpi pending"><small>Pending</small><strong id="kPending">0</strong></div>
+          <div class="kpi confirmed"><small>Accepted</small><strong id="kAccepted">0</strong></div>
+          <div class="kpi rejected"><small>Rejected</small><strong id="kRejected">0</strong></div>
+          <div class="kpi money"><small>Fees accepted</small><strong id="kMoney">PKR 0</strong></div>
+        </div>
+        <div class="toolbar">
+          <div class="tabs" id="tabs">
+            <button data-f="all" class="on">All<span id="cAll">0</span></button>
+            <button data-f="pending">Pending<span id="cPending">0</span></button>
+            <button data-f="accepted">Accepted<span id="cAccepted">0</span></button>
+            <button data-f="rejected">Rejected<span id="cRejected">0</span></button>
+          </div>
+          <label class="search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+            <input id="search" type="search" placeholder="Search name, email, ID, txn…" aria-label="Search registrations" />
+          </label>
+        </div>
+        <div class="table-card">
+          <div class="scroll">
+            <table class="data">
+              <thead>
+                <tr><th>ID</th><th>Team</th><th>Participants</th><th>Payment</th><th>Status</th><th>Registered</th><th style="text-align:right">Actions</th></tr>
+              </thead>
+              <tbody id="rows"></tbody>
+            </table>
+          </div>
+          <div class="empty" id="empty" hidden>
+            <h3 id="emptyTitle">No registrations yet</h3>
+            <p id="emptyText">New entries will show up here as soon as someone registers.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" id="panel-comp">
+        <div class="dash-head">
+          <div>
+            <h1>Competition settings</h1>
+            <p>Each accepted team starts its own timer. Closing the gate only blocks new starts.</p>
+          </div>
+        </div>
+        <form class="card" id="compForm" style="padding:28px;max-width:720px">
+          <div id="compAlert" class="alert err"></div>
+          <div class="field">
+            <label for="driveLink">Organizer Google Drive link</label>
+            <input id="driveLink" placeholder="https://drive.google.com/..." />
+          </div>
+          <div class="grid-2" style="margin-top:16px">
+            <div class="field">
+              <label for="durationMinutes">Duration (minutes)</label>
+              <input id="durationMinutes" type="number" min="1" max="180" />
+            </div>
+            <div class="field">
+              <label for="defaultVenue">Default venue</label>
+              <input id="defaultVenue" placeholder="e.g. CS Lab 2, Block B" />
+            </div>
+          </div>
+          <div style="margin-top:22px" class="gate">
+            <button type="button" class="toggle" id="gateBtn" aria-pressed="false"><i></i></button>
+            <div>
+              <b id="gateLabel">Gate closed</b>
+              <div class="t-sub">Students can start only while the gate is open.</div>
+            </div>
+          </div>
+          <button class="btn" style="margin-top:22px" type="submit">Save settings</button>
+        </form>
+      </section>
+
+      <section class="panel" id="panel-live">
+        <div class="dash-head">
+          <div>
+            <h1>Live monitoring</h1>
+            <p>Accepted teams. Auto-refresh every 10 seconds. Times are Asia/Karachi.</p>
+          </div>
+          <div style="display:flex;gap:10px">
+            <button class="btn ghost sm" id="liveRefresh">Refresh</button>
+            <button class="btn sm" id="liveCsv">Export CSV</button>
+          </div>
+        </div>
+        <div class="filter-row">
+          <div class="tabs" id="liveTabs">
+            <button data-s="all" class="on">All</button>
+            <button data-s="not_started">Not started</button>
+            <button data-s="running">Running</button>
+            <button data-s="time_over">Time over</button>
+            <button data-s="submitted">Submitted</button>
+          </div>
+          <label class="search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+            <input id="liveSearch" type="search" placeholder="Search teams…" />
+          </label>
+        </div>
+        <div class="table-card">
+          <div class="scroll">
+            <table class="data">
+              <thead>
+                <tr>
+                  <th>Team</th><th>Members</th><th>Reg nos</th><th>Venue</th><th>State</th>
+                  <th>Started</th><th>Ends</th><th>Link</th><th>Submitted</th><th>After start</th><th></th>
+                </tr>
+              </thead>
+              <tbody id="liveRows"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" id="panel-results">
+        <div class="dash-head">
+          <div>
+            <h1>Judging &amp; results</h1>
+            <p id="reviewProgress">Reviewed 0 of 0 submissions.</p>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <button class="btn sm" id="publishBtn">Publish results</button>
+            <button class="btn ghost sm" id="unpublishBtn">Unpublish</button>
+            <button class="btn ghost sm" id="resultsCsv">Export CSV</button>
+          </div>
+        </div>
+        <div class="podium-admin" id="podiumAdmin"></div>
+        <h3 style="margin:8px 0 12px">Submissions</h3>
+        <div class="table-card" style="margin-bottom:28px">
+          <div class="scroll">
+            <table class="data">
+              <thead>
+                <tr><th>Team</th><th>Members</th><th>Link</th><th>Submitted</th><th>Position</th><th>Reviewed</th><th>Notes</th></tr>
+              </thead>
+              <tbody id="judgeRows"></tbody>
+            </table>
+          </div>
+        </div>
+        <h3 style="margin:8px 0 12px">Not submitted</h3>
+        <p class="muted" style="margin-bottom:12px">Accepted teams without a Drive link cannot receive a position.</p>
+        <div class="table-card">
+          <div class="scroll">
+            <table class="data">
+              <thead><tr><th>Team</th><th>Members</th><th>Reg nos</th><th>Venue</th><th>State</th></tr></thead>
+              <tbody id="missRows"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <div class="overlay" id="overlay"></div>
+  <aside class="drawer" id="drawer" aria-hidden="true">
+    <button class="btn ghost sm close" id="closeDrawer">Close</button>
+    <div id="drawerBody"></div>
+  </aside>
+  <div class="toast" id="toast" role="status"></div>
+
+  <script src="js/common.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

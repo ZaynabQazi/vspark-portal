@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Register | VSPARK</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232f7bff'/%3E%3Ctext x='16' y='23' font-size='20' font-weight='900' text-anchor='middle' fill='white' font-family='Arial'%3EV%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="nav">
+    <div class="container">
+      <a class="brand" href="/">
+        <span class="brand-mark">V</span>
+        <span class="brand-text">SPARK<small>Registration</small></span>
+      </a>
+      <nav class="nav-links" aria-label="Main">
+        <a href="/">Home</a>
+        <a href="/portal">Participant Portal</a>
+        <a href="/register" class="btn sm">Register now</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="portal-wrap">
+    <div class="container">
+      <div class="sec-head">
+        <span class="kicker">Registration</span>
+        <h2>Secure your spot.</h2>
+        <p>Your registration stays pending until organizers accept it. Save the VS- ID you receive.</p>
+      </div>
+      <div class="reg-layout">
+        <aside class="reg-aside">
+          <div class="fee-card">
+            <small>Registration fee</small>
+            <div class="amt"><span>PKR</span>1,000</div>
+            <p>Per team. Same fee for 1 or 2 members.</p>
+          </div>
+          <span class="badge-fixed" id="instituteBadge">COMSATS University Islamabad, Vehari Campus</span>
+          <ul class="aside-list">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span><b>Upload a payment receipt</b> (JPG, PNG or PDF, max 2 MB).</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span><b>Save your registration ID</b> to check approval and venue in the portal.</span></li>
+          </ul>
+        </aside>
+
+        <div class="card" style="padding:0">
+          <form id="regForm" class="reg" novalidate>
+            <div id="alert" class="alert err" role="alert"></div>
+            <fieldset>
+              <legend><span>1</span>Team</legend>
+              <div class="field">
+                <label for="teamName">Team / participant name <em>*</em></label>
+                <input id="teamName" name="teamName" placeholder="e.g. Prompt Wizards" autocomplete="off" />
+                <div class="err"></div>
+              </div>
+              <div class="grid-2" style="margin-top:16px">
+                <div class="field"><label for="email">Contact email <em>*</em></label><input id="email" name="email" type="email" autocomplete="email" /><div class="err"></div></div>
+                <div class="field"><label for="phone">Mobile number <em>*</em></label><input id="phone" name="phone" inputmode="tel" placeholder="03XXXXXXXXX" autocomplete="tel" /><div class="err"></div></div>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend><span>2</span>Member 1</legend>
+              <div class="grid-2">
+                <div class="field"><label for="member1Name">Full name <em>*</em></label><input id="member1Name" name="member1Name" /><div class="err"></div></div>
+                <div class="field"><label for="member1RegNo">Registration no. <em>*</em></label><input id="member1RegNo" name="member1RegNo" placeholder="FA23-BSE-062" class="regno" /><div class="err"></div></div>
+                <div class="field span-2">
+                  <label for="member1Program">Degree program <em>*</em></label>
+                  <select id="member1Program" name="member1Program"><option value="">Select program</option></select>
+                  <div class="err"></div>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend><span>3</span>Member 2 <small style="font-weight:500;color:var(--muted)">(optional)</small></legend>
+              <div class="grid-2">
+                <div class="field"><label for="member2Name">Full name</label><input id="member2Name" name="member2Name" /><div class="err"></div></div>
+                <div class="field"><label for="member2RegNo">Registration no.</label><input id="member2RegNo" name="member2RegNo" placeholder="FA23-BSE-062" class="regno" /><div class="err"></div></div>
+                <div class="field span-2">
+                  <label for="member2Program">Degree program</label>
+                  <select id="member2Program" name="member2Program"><option value="">Select program</option></select>
+                  <div class="err"></div>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend><span>4</span>Fee payment (PKR 1,000)</legend>
+              <div class="grid-2">
+                <div class="field">
+                  <label for="paymentMethod">Payment method <em>*</em></label>
+                  <select id="paymentMethod" name="paymentMethod">
+                    <option value="">Select method</option>
+                    <option>JazzCash</option>
+                    <option>Easypaisa</option>
+                    <option>Bank Transfer</option>
+                    <option>On-campus Desk</option>
+                  </select>
+                  <div class="err"></div>
+                </div>
+                <div class="field" id="txnField">
+                  <label for="transactionId">Transaction ID <em>*</em></label>
+                  <input id="transactionId" name="transactionId" placeholder="e.g. 1234567890" autocomplete="off" />
+                  <div class="err"></div>
+                </div>
+              </div>
+              <div class="field" style="margin-top:16px">
+                <label for="receipt">Payment receipt <em>*</em></label>
+                <div class="file-box" id="receiptBox">
+                  <input id="receipt" name="receipt" type="file" accept=".jpg,.jpeg,.png,.pdf,image/jpeg,image/png,application/pdf" />
+                  <div class="file-meta" id="receiptMeta">JPG, PNG or PDF · max 2 MB</div>
+                  <div class="file-preview" id="receiptPreview"></div>
+                </div>
+                <div class="err" id="receiptErr"></div>
+              </div>
+            </fieldset>
+
+            <label class="agree" id="agreeWrap">
+              <input type="checkbox" id="acceptedRules" />
+              <span>I have read the competition rules and agree to follow them, including the fairness and conduct policy.</span>
+            </label>
+
+            <div class="form-foot">
+              <p>Details are used only to manage this competition.</p>
+              <button class="btn" id="submitBtn" type="submit">Submit registration</button>
+            </div>
+          </form>
+
+          <div id="success" class="success" role="status">
+            <div class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+            <h3>Registration received</h3>
+            <p>Save this ID. Use it to check your approval status and venue.</p>
+            <div class="rid" id="rid">VS-0000</div>
+            <p class="muted">Open the <a href="/portal">Participant Portal</a> with this ID and either member’s registration number.</p>
+            <div style="margin-top:18px"><button class="btn ghost" id="againBtn" type="button">Register another entry</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script src="js/common.js"></script>
+  <script src="js/register.js"></script>
+</body>
+</html>
